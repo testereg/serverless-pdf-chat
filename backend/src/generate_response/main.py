@@ -5,7 +5,7 @@ from langchain.llms.bedrock import Bedrock
 from langchain.memory.chat_message_histories import DynamoDBChatMessageHistory
 from langchain.memory import ConversationBufferMemory
 from langchain.embeddings import BedrockEmbeddings
-from langchain.vectorstores import FAISS
+from langchain_community.vectorstores import FAISS
 from langchain.chains import ConversationalRetrievalChain
 
 
@@ -39,9 +39,9 @@ def lambda_handler(event, context):
         client=bedrock_runtime,
         region_name="us-east-1",
     ), Bedrock(
-        model_id="anthropic.claude-3-sonnet-20240229-v1:0", client=bedrock_runtime, region_name="us-east-1"
+        model_id="anthropic.claude-v2", client=bedrock_runtime, region_name="us-east-1"
     )
-    faiss_index = FAISS.load_local("/tmp", embeddings)
+    faiss_index = FAISS.load_local("/tmp", embeddings,allow_dangerous_deserialization=True)
 
     message_history = DynamoDBChatMessageHistory(
         table_name=MEMORY_TABLE, session_id=conversation_id
