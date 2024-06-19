@@ -9,6 +9,12 @@ from langchain.vectorstores import FAISS
 DOCUMENT_TABLE = os.environ["DOCUMENT_TABLE"]
 BUCKET = os.environ["BUCKET"]
 
+
+print('table ' + DOCUMENT_TABLE)
+
+
+print('bucket ' + BUCKET)
+
 s3 = boto3.client("s3")
 ddb = boto3.resource("dynamodb")
 document_table = ddb.Table(DOCUMENT_TABLE)
@@ -31,7 +37,9 @@ def lambda_handler(event, context):
     document_id = event_body["documentid"]
     user_id = event_body["user"]
     key = event_body["key"]
+    print(key)
     file_name_full = key.split("/")[-1]
+    print(file_name_full)
 
     set_doc_status(user_id, document_id, "PROCESSING")
 
@@ -57,7 +65,7 @@ def lambda_handler(event, context):
     )
 
 
-    pg_no=4
+    pg_no=0
     print(f"Content:\n {pages[pg_no].page_content} \n metadata:\n {pages[pg_no].metadata}")
     index_from_loader = index_creator.from_documents(pages)
 

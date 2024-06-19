@@ -1,0 +1,21 @@
+{
+        "Records": [
+            {
+                "messageId": "05d43269-5c84-4740-9f4e-263410260d62",
+                "receiptHandle": "AQEB2Z9IDm82BZto0h8NIbGW9fpBe6HYYrdOhFDfjh/qTKROKybeMQap1uq0Sy1PtzfcT6g4bGKYxflTOxl7iDWZjChnjsLC8mcunpZIWUl3PfxjH/VKX9//TGuzKwDSvz7jTuK0nlKztqJIwpqgHcIex1GNrrj69gJDyWnfK8/DJ+54/vE0nWq5jOMzNKLChtgfdzJTjOqcTxGZhhqM5YU47cIQfJUI4U1II55StToxuguazwTahIg+vb0HEIgm+GUv/ZlI6+aWM+ctRsZzpYKXkrKcP+QV7skpUWxNCjnF280T1/tYFSvEvdN9BeJgEsudram2xGTOthWbf1cavAb6gH7Mp0yexf1ThvixgMgMxuwpco6Ld0yM5D6NYLCQEKUBFX+Edsyo+DdhO7pok6wsHTmLpmSb0y9/q90UJhYfNp0YwL53R8+R2wz4wbcfv7Tu",
+                "body": "{\"documentid\": \"jviNXzZbXVgwHcwUo3kMQs\", \"key\": \"04981408-b071-70e5-8eba-44c4796cecda/RU04017475-best-tn62_Part1_Part1.pdf/RU04017475-best-tn62_Part1_Part1.pdf\", \"user\": \"04981408-b071-70e5-8eba-44c4796cecda\"}",
+                "attributes": {
+                    "ApproximateReceiveCount": "1",
+                    "AWSTraceHeader": "Root=1-66733b7b-68d0009409a9f9a73d47fcf0;Parent=068f8d41059896b7;Sampled=1;Lineage=87885465:0",
+                    "SentTimestamp": "1718827900027",
+                    "SenderId": "AROAQWJ7ZAOBSHKPULI63:omni-hackathon-ai2-UploadTriggerFunction-AK0Q2DAKEZ22",
+                    "ApproximateFirstReceiveTimestamp": "1718827900037"
+                },
+                "messageAttributes": {},
+                "md5OfBody": "395d632d567fd432fb6fc6cee6cd5705",
+                "eventSource": "aws:sqs",
+                "eventSourceARN": "arn:aws:sqs:us-east-1:047915271043:omni-hackathon-ai2-EmbeddingQueue-C6j8hnDrCwHM",
+                "awsRegion": "us-east-1"
+            }
+        ]
+    }
