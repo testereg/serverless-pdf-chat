@@ -6,7 +6,6 @@ from langchain.document_loaders import PyPDFLoader
 from langchain.indexes import VectorstoreIndexCreator
 from langchain.vectorstores import FAISS
 
-
 DOCUMENT_TABLE = os.environ["DOCUMENT_TABLE"]
 BUCKET = os.environ["BUCKET"]
 
@@ -26,6 +25,8 @@ def set_doc_status(user_id, document_id, status):
 
 @logger.inject_lambda_context(log_event=True)
 def lambda_handler(event, context):
+
+    print('11111114')
     event_body = json.loads(event["Records"][0]["body"])
     document_id = event_body["documentid"]
     user_id = event_body["user"]
@@ -37,6 +38,7 @@ def lambda_handler(event, context):
     s3.download_file(BUCKET, key, f"/tmp/{file_name_full}")
 
     loader = PyPDFLoader(f"/tmp/{file_name_full}")
+    pages = loader.load_and_split()
 
     bedrock_runtime = boto3.client(
         service_name="bedrock-runtime",
@@ -54,7 +56,10 @@ def lambda_handler(event, context):
         embedding=embeddings,
     )
 
-    index_from_loader = index_creator.from_loaders([loader])
+
+    pg_no=4
+    print(f"Content:\n {pages[pg_no].page_content} \n metadata:\n {pages[pg_no].metadata}")
+    index_from_loader = index_creator.from_documents(pages)
 
     index_from_loader.vectorstore.save_local("/tmp")
 
