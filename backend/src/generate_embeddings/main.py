@@ -4,7 +4,7 @@ from aws_lambda_powertools import Logger
 from langchain.embeddings import BedrockEmbeddings
 from langchain.document_loaders import PyPDFLoader
 from langchain.indexes import VectorstoreIndexCreator
-from langchain.vectorstores import FAISS
+from langchain_community.vectorstores import FAISS
 
 
 DOCUMENT_TABLE = os.environ["DOCUMENT_TABLE"]

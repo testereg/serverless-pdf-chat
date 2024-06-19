@@ -1,13 +1,13 @@
-import os, json
 import boto3
+import json
+import os
 from aws_lambda_powertools import Logger
 from langchain.llms.bedrock import Bedrock
-from langchain.memory.chat_message_histories import DynamoDBChatMessageHistory
-from langchain.memory import ConversationBufferMemory
-from langchain.embeddings import BedrockEmbeddings
-from langchain_community.vectorstores import FAISS
 from langchain.chains import ConversationalRetrievalChain
-
+from langchain.embeddings import BedrockEmbeddings
+from langchain.memory import ConversationBufferMemory
+from langchain.memory.chat_message_histories import DynamoDBChatMessageHistory
+from langchain_community.vectorstores import FAISS
 
 MEMORY_TABLE = os.environ["MEMORY_TABLE"]
 BUCKET = os.environ["BUCKET"]
@@ -41,7 +41,7 @@ def lambda_handler(event, context):
     ), Bedrock(
         model_id="anthropic.claude-v2", client=bedrock_runtime, region_name="us-east-1"
     )
-    faiss_index = FAISS.load_local("/tmp", embeddings,allow_dangerous_deserialization=True)
+    faiss_index = FAISS.load_local("/tmp", embeddings, allow_dangerous_deserialization=True)
 
     message_history = DynamoDBChatMessageHistory(
         table_name=MEMORY_TABLE, session_id=conversation_id
