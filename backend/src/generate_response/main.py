@@ -2,9 +2,9 @@ import boto3
 import json
 import os
 from aws_lambda_powertools import Logger
-from langchain.llms.bedrock import Bedrock
+from langchain_community.chat_models import BedrockChat
+from langchain_community.embeddings.bedrock import BedrockEmbeddings
 from langchain.chains import ConversationalRetrievalChain
-from langchain.embeddings import BedrockEmbeddings
 from langchain.memory import ConversationBufferMemory
 from langchain.memory.chat_message_histories import DynamoDBChatMessageHistory
 from langchain_community.vectorstores import FAISS
@@ -34,13 +34,25 @@ def lambda_handler(event, context):
         region_name="us-east-1",
     )
 
-    embeddings, llm = BedrockEmbeddings(
-        model_id="amazon.titan-embed-text-v2:0",
-        client=bedrock_runtime,
-        region_name="us-east-1",
-    ), Bedrock(
-        model_id="anthropic.claude-3-haiku-20240307-v1:0", client=bedrock_runtime, region_name="us-east-1"
+
+    model_kwargs =  { 
+    "max_tokens": 2048,  # Claude-3 use “max_tokens” However Claud-2 requires “max_tokens_to_sample”.
+    "temperature": 0.0,
+    "top_k": 250,
+    "top_p": 1,
+    "stop_sequences": ["\n\nHuman"],
+    }
+
+
+    embeddings = BedrockEmbeddings(
+        model_id="amazon.titan-embed-text-v2:0"
     )
+    
+    chat = BedrockChat(
+        model_id="anthropic.claude-3-sonnet-20240229-v1:0", 
+        model_kwargs=model_kwargs,
+    )
+
     faiss_index = FAISS.load_local("/tmp", embeddings, allow_dangerous_deserialization=True)
 
     message_history = DynamoDBChatMessageHistory(
@@ -56,7 +68,7 @@ def lambda_handler(event, context):
     )
 
     qa = ConversationalRetrievalChain.from_llm(
-        llm=llm,
+        llm=chat,
         retriever=faiss_index.as_retriever(),
         memory=memory,
         return_source_documents=True,
